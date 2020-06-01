@@ -20,6 +20,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("ntp time error: %s \n", err)
 	}
-	exactTime := ntpTime.Round(0)
-	fmt.Printf("exact time: %s", exactTime.String())
+	exactTime := ntpTime
+	fmt.Printf("exact time: %s\n", exactTime)
 }
