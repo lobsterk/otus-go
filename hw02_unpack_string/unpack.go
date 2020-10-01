@@ -33,5 +33,6 @@ func Unpack(s string) (string, error) {
 	if len(res.String()) > 0 {
 		return res.String(), nil
 	}
+
 	return "", nil
 }
