@@ -32,7 +32,7 @@ func Top10(inputText string) []string {
 		}
 	}
 
-	var words = make([]wordStatistic, 0, len(wordsList))
+	words := make([]wordStatistic, 0)
 	for word, count := range wordsList {
 		words = append(words, wordStatistic{word, count})
 	}
@@ -48,7 +48,7 @@ func Top10(inputText string) []string {
 		limit = top
 	}
 
-	var result = make([]string, 0, limit)
+	result := make([]string, 0)
 	for _, word := range words[:limit] {
 		result = append(result, word.Word)
 	}
