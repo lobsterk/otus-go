@@ -69,7 +69,7 @@ func main() {
 		return
 	case err = <-errorsCh:
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 		fmt.Fprintf(os.Stderr, "...EOF\n")
 
