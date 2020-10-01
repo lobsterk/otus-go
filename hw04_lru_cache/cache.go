@@ -59,6 +59,7 @@ func (cache *lruCache) Get(key Key) (interface{}, bool) {
 
 	if existedItem, exists := cache.items[key]; exists {
 		cache.queue.MoveToFront(existedItem)
+
 		return existedItem.Value.(cacheItem).value, true
 	}
 
