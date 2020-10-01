@@ -22,6 +22,7 @@ func main() {
 
 	if from == "" || to == "" {
 		flag.PrintDefaults()
+
 		return
 	}
 
