@@ -62,17 +62,23 @@ func Generate(fileName string) error {
 
 	template, err := CreateTemplate(structsData)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+
+		return err
 	}
 
 	resultedTemplate, err := format.Source(template.Bytes())
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+
+		return err
 	}
 
 	_, err = io.WriteString(resultFile, string(resultedTemplate))
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+
+		return err
 	}
 
 	return nil
