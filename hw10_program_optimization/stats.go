@@ -1,38 +1,56 @@
 package hw10_program_optimization //nolint:golint,stylecheck
 
 import (
-	"bufio"
-	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"regexp"
 	"strings"
-)
 
-type User struct {
-	ID       int    `json:"-"`
-	Name     string `json:"-"`
-	Username string `json:"-"`
-	Email    string
-	Phone    string `json:"-"`
-	Password string `json:"-"`
-	Address  string `json:"-"`
-}
+	"github.com/valyala/fastjson"
+)
 
 type DomainStat map[string]int
 
+var (
+	reg        *regexp.Regexp
+	emails     [100_000]string
+	p          fastjson.Parser
+	ErrNoEmail = errors.New("line does not contain email")
+)
+
 func GetDomainStat(r io.Reader, domain string) (DomainStat, error) {
-	var user User
-	result := make(DomainStat, 1000)
-	domainRegexp := regexp.MustCompile("\\." + domain)
-	scanner := bufio.NewScanner(r)
-
-	for scanner.Scan() {
-		if err := json.Unmarshal(scanner.Bytes(), &user); err != nil {
-			return result, err
+	// Get Users
+	content, err := ioutil.ReadAll(r)
+	if err != nil {
+		return nil, err
+	}
+	lines := strings.Split(string(content), "\n")
+	for i, line := range lines {
+		v, err := p.Parse(line)
+		if err != nil {
+			return nil, err
 		}
+		emails[i] = string(v.GetStringBytes("Email"))
+		if (emails[i] == "") || (emails[i] == " ") {
+			return nil, fmt.Errorf("%w: %s", ErrNoEmail, line)
+		}
+	}
 
-		if domainRegexp.MatchString(user.Email) {
-			result[strings.ToLower(strings.SplitN(user.Email, "@", 2)[1])]++
+	// Count domains
+	reg, err = regexp.Compile("\\." + domain)
+	if err != nil {
+		return nil, err
+	}
+	result := make(DomainStat)
+
+	for _, e := range emails {
+		if e == "" {
+			break
+		}
+		if reg.MatchString(e) {
+			result[strings.ToLower(strings.SplitN(e, "@", 2)[1])]++
 		}
 	}
 
