@@ -37,6 +37,7 @@ func ReadDir(dir string) (Environment, error) {
 		}
 		if len(b) == 0 {
 			delete(result, filename)
+
 			continue
 		}
 		b = bytes.ReplaceAll(bytes.Split(b, []byte("\n"))[0], []byte("\x00"), []byte("\n"))
