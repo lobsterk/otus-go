@@ -1,0 +1,14 @@
+{
+  "Host": "0.0.0.0",
+  "Port": 5085,
+  "QueueName": "events",
+  "ExchangeName": "exchange_events",
+  "GRPCServer": {
+    "Host": "0.0.0.0",
+    "Port": 8090
+  },
+  "Logging": {
+    "File": "./logs/scheduler/log.txt",
+    "Level": "debug"
+  }
+}
